@@ -24,6 +24,7 @@ library(cmocean)
 library(mgcv)
 library(ggnewscale)
 
+####------------------------------------------------------------------------####
 ## Import and curate data ####
 
 WSER_data <- read.csv2('Data/WSER_temperature_finishers_data.csv',
@@ -39,9 +40,12 @@ WSER_data <- WSER_data %>%
   # Compute the temperature range
   mutate(Temp_range = Temp_high_C-Temp_low_C) %>%
   # Get the date in Date format
-  mutate(Date = dmy(Date))
+  mutate(Date = dmy(Date)) %>%
+  mutate(Year = year(Date)) %>%
+  mutate(First_man_time = hms(First_man_time)) %>%
+  mutate(First_woman_time = hms(First_woman_time))
 
-## Plots ####
+## Simple plots ####
 
 # Ok, for a start, let's plot the percentage of finishers as a time series,
 # with the maximum temperature as color scale
@@ -167,6 +171,7 @@ ggplot(WSER_data_2) +
 
 # So, we will need to disentangle the effects of temperature and time.
 
+####------------------------------------------------------------------------####
 ### Generalised Linear Model ####
 
 # One way to estimate the effects of both parameters (time and temperature) is
@@ -271,7 +276,7 @@ WSER_model <- NewData_1 %>%
 
 # But now, how do we plot that?
 
-### Plots ####
+### Model plots ####
 
 # First, let's try to just plot the percentage of finishers as a function of 
 # temperature.
@@ -417,3 +422,65 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
 
 # I'm not a huge fan of the looks of this one, because the color palette is not
 # completely adapted for that. Anyway, I think it's alright.
+####------------------------------------------------------------------------####
+### Bonus plot ####
+
+# How about a little bonus plot with the finish times of the 1st man and woman
+# for each edition?
+
+WSER_data <- WSER_data %>%
+  mutate(Distance_miles = as_factor(Distance_miles)) %>%
+  mutate(Distance_miles = fct_relevel(Distance_miles,
+                                      c('89', '93.5', '?', '100.2')))
+
+# A little color palette
+sierra_3 <- c('#759AD9', '#225E6C', '#6E7005')
+
+ggplot(WSER_data) +
+  ## Finish times
+  # Points
+  geom_point(aes(x = Year, y = First_man_time),
+             size = 3.5, color = '#2B4561', fill = '#76A7E2',
+             stroke = .15, shape = 21) +
+  geom_point(aes(x = Year, y = First_woman_time),
+             size = 3.5, alpha = .8, color = '#711412', fill = '#FC4D6B',
+             stroke = .15, shape = 21) +
+  # Lines
+  geom_line(aes(x = Year, y = First_man_time),
+            linewidth = .7, alpha = .8, color = '#2B4561', linetype = 2) +
+  geom_line(aes(x = Year, y = First_woman_time),
+            linewidth = .7, alpha = .8, color = '#711412', linetype = 2) +
+  
+  ## Let's add the distance of the course
+  geom_line(data = subset(WSER_data, Distance_miles %in% c('89','93.5','100.2')),
+            aes(x = Year, y = hms('13H 00M 00S'), 
+                color = as_factor(Distance_miles)), linewidth = 3) +
+  
+  # color scale for distance
+  scale_color_discrete(palette = sierra_3) +
+  
+  # y-axis scale
+  scale_y_time(limits = c(hms('13H 00M 00S'), hms('31H 00M 00S')),
+               breaks = c(hms('14H 00M 00S'), hms('16H 00M 00S'),
+                          hms('20H 00M 00S'), hms('24H 00M 00S'),
+                          hms('30H 00M 00S'))
+               ) +
+  
+  # Labels
+  labs(title = 'Time of first man and woman at WSER',
+       subtitle = '(1974-2025)',
+       x = 'Year', y = 'Time in hours, minutes, seconds',
+       color = 'Course distance
+     (miles): ') +
+  theme_classic() +
+  theme(legend.position = 'bottom',
+        legend.background = element_rect(fill = 'white', color = 'grey10',
+                                         linewidth = .25),
+        legend.frame = element_rect(fill = 'transparent', color = 'grey10',
+                                    linewidth = .25),
+        legend.ticks = element_line(color = 'grey10',
+                                    linewidth = .25))
+
+# Pretty good!
+
+####----------------------------End of script-------------------------------####
