@@ -1,0 +1,8 @@
+Here's the folder for the data file used in the R script. It's a slightly modified version of a table found on the WSER's website
+(https://www.wser.org/).
+
+The modifications I made were:
+- Fixing the dates so the format is consistent between all years
+- Adding the number of runners and finishers for each edition
+- Modified the names of the column to make them easier to handle
+- Adding the time for first man AND first woman (scrapped from Wikipedia https://en.wikipedia.org/wiki/Western_States_Endurance_Run)
