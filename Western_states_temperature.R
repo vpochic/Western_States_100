@@ -501,7 +501,7 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
   
   # x- and y-axis limits
   scale_y_continuous(limits = c(40,100)) +
-  scale_x_continuous(limits = c(1979, 2028)) +
+  scale_x_continuous(limits = c(1979, 2027)) +
   
   theme_classic() +
   theme(legend.position = 'bottom',
