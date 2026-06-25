@@ -1,6 +1,6 @@
 # Western States 100: temperature and percentage of finishers
  ⛰️ 🏃‍♀️ 🏃‍♂️ 🌡️
-A small data analysis project looking at the influence of temperature (and time) on the percentage of finishers at the Western States 100 ultra trail (Western States Endurance Run, WSER).
+A small data analysis project looking at the influence of temperature (and time) on the percentage of finishers at the Western States 100 ultratrail (Western States Endurance Run, WSER).
 
 For this, I used publically available data from the WSER's official website:
 https://www.wser.org/
