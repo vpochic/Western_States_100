@@ -1,6 +1,6 @@
 ### Western States Endurance Run: temperature and percent of finishers ###
 ## Author: V. POCHIC
-# Last modif: 2026/06/24
+# Last modif: 2026/06/26
 
 ## Description ####
 
@@ -52,32 +52,39 @@ WSER_data <- WSER_data %>%
 
 ggplot(WSER_data) +
   geom_point(aes(x = Date, y = Finish_percent, fill = Temp_high_C),
-             size = 3.5, alpha = .8, color = 'grey10', 
-             stroke = .05, shape = 21) +
+             size = 4, alpha = .8, color = 'grey10', 
+             stroke = .1, shape = 21) +
   # color scales
-  scale_fill_distiller(palette = 'RdBu', direction = -1) +
+  scale_fill_distiller(palette = 'RdYlBu', direction = -1) +
   # Labels
-  labs(title = 'Percent of finishers at the Western States',
-       x = 'Year', y = NULL,
+  labs(title = 'Percentage of finishers at Western States',
+       subtitle = '1974-2025',
+       x = 'Year', y = '% of finishers',
        fill = 'Temperature (°C): ') +
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                   linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
+
+# Save the plot
+# ggsave('Plots/Percent_finishers_74_25.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 # Interesting! Several things to see here. 
 # First, there are a few points with
 # either really low or really high values on the y-scale, in the 70s. This is
 # because in the first 4 editions, there were only 1, 1, 1 and 14 runners! The
-# 5th edition in 1978 had only 63.
+# 5th edition in 1978 had already 63.
 
 # So, we're going to exclude these points from our analysis, as they are clearly
 # outliers regarding the number of runners. We'll start with the 1979 edition,
-# which had 143 runners. Nowadays, there are consistently 370 runners on the
+# which had 143 runners. Nowadays, there are around 370 runners on the
 # start line each year.
 
 WSER_data_2 <- WSER_data %>%
@@ -89,87 +96,107 @@ WSER_data_2 <- WSER_data %>%
 # Let's plot the same graph with the new data!
 ggplot(WSER_data_2) +
   geom_point(aes(x = Date, y = Finish_percent, fill = Temp_high_C),
-             size = 3.5, alpha = .8, color = 'grey10', 
-             stroke = .05, shape = 21) +
+             size = 4, alpha = .8, color = 'grey10', 
+             stroke = .1, shape = 21) +
   # color scales
-  scale_fill_distiller(palette = 'RdBu', direction = -1) +
+  scale_fill_distiller(palette = 'RdYlBu', direction = -1) +
   # y-axis limits
   scale_y_continuous(limits = c(25,100)) +
   # Labels
-  labs(title = 'Percent of finishers at the Western States',
-       x = 'Year', y = NULL,
+  labs(title = 'Percentage of finishers at Western States',
+       subtitle = '1979-2025',
+       x = 'Year', y = '% of finishers',
        fill = 'Temperature (°C): ') +
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
+
+# Save the plot
+# ggsave('Plots/Percent_finishers_79_25.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 # Ok nice!
 # Let's see the percentage of finishers as a function of temperature now
 ggplot(WSER_data_2) +
   geom_point(aes(x = Temp_high_C, y = Finish_percent, fill = Temp_high_C),
-             size = 3.5, alpha = .8, color = 'grey10', 
-             stroke = .05, shape = 21) +
+             size = 4, alpha = .8, color = 'grey10', 
+             stroke = .1, shape = 21) +
   # color scales
-  scale_fill_distiller(palette = 'RdBu', direction = -1) +
+  scale_fill_distiller(palette = 'RdYlBu', direction = -1) +
   # x- and y-axis limits
   scale_y_continuous(limits = c(25,100)) +
   scale_x_continuous(limits = c(15,45)) +
   # Labels
-  labs(title = 'Percent of finishers at the Western States',
-       x = 'Temperature (°C)', y = NULL,
+  labs(title = 'Percentage of finishers at Western States',
+       subtitle = 'depending on temperature',
+       x = 'Temperature (°C)', y = '% of finishers',
        fill = 'Temperature (°C): ') +
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
+
+# Save the plot
+# ggsave('Plots/Percent_finishers_temperature.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 # We can guess there's something, but the relation is not clear-cut.
 # Instead of colouring the dots by temperature, let's color them by year on this
 # graph.
-# While we're at it, we'll also compute the decade, this will come at handy 
-# later. We'll do that with a function:
-floor_decade = function(value){ return(value - value %% 10) }
 
 WSER_data_2 <- WSER_data_2 %>%
-  mutate(Year = year(Date)) %>%
-  mutate(Decade = floor_decade(Year))
+  mutate(Year = year(Date))
 
 ggplot(WSER_data_2) +
   geom_point(aes(x = Temp_high_C, y = Finish_percent, fill = Year),
-             size = 3.5, alpha = .8, color = 'grey10', 
-             stroke = .05, shape = 21) +
+             size = 4, alpha = .8, color = 'grey10', 
+             stroke = .1, shape = 21) +
   # color scales
-  scale_fill_cmocean(name = 'haline') +
+  scale_fill_cmocean(name = 'haline',
+                     limits = c(1979,2025),
+                     breaks = c(1980, 2000, 2020)) +
   # x- and y-axis limits
   scale_y_continuous(limits = c(25,100)) +
   scale_x_continuous(limits = c(15,45)) +
   # Labels
-  labs(title = 'Percent of finishers at the Western States',
-       x = 'Temperature (°C)', y = NULL,
+  labs(title = 'Percentage of finishers at Western States',
+       subtitle = 'depending on temperature, coloured by year',
+       x = 'Temperature (°C)', y = '% of finishers',
        fill = 'Year: ') +
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
 
 # There is a clear trend that we already saw in the first graph: recent editions
 # tend to have higher percentages of finishers. That's just the average level of
 # runners becoming higher and higher as time goes by.
 
 # So, we will need to disentangle the effects of temperature and time.
+
+# Save the plot
+# ggsave('Plots/Percent_finishers_temperature_year.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
+
 
 ####------------------------------------------------------------------------####
 ### Generalised Linear Model ####
@@ -283,10 +310,6 @@ WSER_model <- NewData_1 %>%
 # Because we modeled both variables and their interaction, we will plot this for
 # 5 years, representative of the 5 decades of our dataset.
 
-# Let's define a nice color palette
-palette_sierra_5years <- c('#759AD9', '#225E6C', '#B2A078', 
-                           '#6E7005', '#0C2802')
-
 ggplot(subset(WSER_model, Year %in% c(1983,1991,2003,2013,2024))) +
   # a shaded area for the confidence interval
   geom_ribbon(aes(x = Temp_high_C,
@@ -300,25 +323,33 @@ ggplot(subset(WSER_model, Year %in% c(1983,1991,2003,2013,2024))) +
   geom_line(aes(x = Temp_high_C, y = response*100,
                 group = as_factor(Year), color = as_factor(Year)),
              linewidth = 1.5, alpha = .8) +
+  
   # color scales
-  scale_color_discrete(palette = palette_sierra_5years) +
-  scale_fill_discrete(palette = palette_sierra_5years) +
+  scale_color_cmocean(name = 'haline', discrete = TRUE) +
+  scale_fill_cmocean(name = 'haline', discrete = TRUE) +
+  
   # x- and y-axis limits
   scale_y_continuous(limits = c(40,100)) +
   scale_x_continuous(limits = c(18,42)) +
   # Labels
   labs(title = 'Model: % finishers at WSER',
-       subtitle = 'depending on temperature',
-       fill = 'Modeled year: ', color = 'Modeled year: ',
-       x = 'Temperature (°C)', y = NULL,) +
+       subtitle = 'depending on temperature, different years',
+       fill = 'Modelled year: ', color = 'Modelled year: ',
+       x = 'Temperature (°C)', y = '% of finishers') +
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
+
+# Save the plot
+# ggsave('Plots/Model_finishers_temperature_year.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 # Great! What about plotting some true data on top?
 
@@ -354,8 +385,8 @@ ggplot(subset(WSER_model, Year %in% c(1983,1991,2003,2013,2024))) +
   # Labels
   labs(title = 'Model: % finishers at WSER',
        subtitle = 'depending on temperature, across years',
-       fill = 'Modelled year: ', color = 'Modelled year: ',
-       x = 'Temperature (°C)', y = NULL,) +
+       fill = 'Year: ', color = 'Year: ',
+       x = 'Temperature (°C)', y = '% of finishers') +
 
   # x- and y-axis limits
   scale_y_continuous(limits = c(40,100)) +
@@ -363,14 +394,19 @@ ggplot(subset(WSER_model, Year %in% c(1983,1991,2003,2013,2024))) +
 
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
 
 # Excellent!
+# Save the plot
+# ggsave('Plots/Model_finishers_temperature_year_data.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 # Now let's look at the effect of the year
 
@@ -398,14 +434,14 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
   
   
   # color scales
-  scale_color_distiller(palette = 'RdBu', direction = -1, guide = 'none') +
-  scale_fill_distiller(palette = 'RdBu', direction = -1) +
+  scale_color_distiller(palette = 'RdYlBu', direction = -1, guide = 'none') +
+  scale_fill_distiller(palette = 'RdYlBu', direction = -1) +
   
   # Labels
   labs(title = 'Model: % finishers at WSER',
        subtitle = 'depending on the year, across temperatures',
-       fill = 'Modelled temperature: ', color = 'Modelled temperature: ',
-       x = 'Year', y = NULL,) +
+       fill = 'Temperature: ', color = 'Temperature: ',
+       x = 'Year', y = '% of finishers') +
   
   # x- and y-axis limits
   scale_y_continuous(limits = c(40,100)) +
@@ -413,15 +449,78 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
   
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
 
 # I'm not a huge fan of the looks of this one, because the color palette is not
 # completely adapted for that. Anyway, I think it's alright.
+
+# Save the plot
+# ggsave('Plots/Model_finishers_year_temperature_data.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
+
+### Last plot: a prediction!
+# As of 2026/06/26, 00:40 (Paris time), the maximum temperature in Auburn, CA 
+# for 2026/06/27 is forecasted to be 23°C (source: my phone's weather app)
+
+# What does the model predict for the percentage of finishers in these 
+# conditions?
+
+ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
+  
+  # Points for true data
+  geom_point(data = WSER_data_2,
+             # We'll fill them by year to see if it fits the model
+             aes(x = Year, y = Finish_percent,
+                 fill = Temp_high_C),
+             stroke = .05, shape = 21, size = 4) +
+  
+  # Point and error bars for 2026 prediction
+  geom_errorbar(data = subset(WSER_model, Year == 2026 & Temp_high_C == 23), 
+                aes(x = Year, ymin = Lwr*100, ymax = Upr*100),
+                color = 'grey10', linewidth = .8,
+                width = 1) +
+  geom_point(data = subset(WSER_model, Year == 2026 & Temp_high_C == 23), 
+             aes(x = Year, y = response*100, fill = Temp_high_C),
+             color = 'grey10', shape = 21, size = 5.5, stroke = .8) +
+  
+  # color scale
+  scale_fill_distiller(palette = 'RdYlBu', direction = -1) +
+  
+  # Labels
+  labs(title = 'Percentage of finishers at WSER',
+       subtitle = 'GLM fit for 2026 based on weather forecast',
+       fill = 'Temperature: ',
+       x = 'Year', y = '% of finishers') +
+  
+  # x- and y-axis limits
+  scale_y_continuous(limits = c(40,100)) +
+  scale_x_continuous(limits = c(1979, 2028)) +
+  
+  theme_classic() +
+  theme(legend.position = 'bottom',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
+                                         linewidth = .25),
+        legend.frame = element_rect(fill = 'transparent', color = 'grey10',
+                                    linewidth = .25),
+        legend.ticks = element_line(color = 'grey10',
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
+
+# Great!
+
+# Save the plot
+# ggsave('Plots/Model_prediction_2026.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
+
+
 ####------------------------------------------------------------------------####
 ### Bonus plot ####
 
@@ -438,18 +537,18 @@ sierra_3 <- c('#759AD9', '#225E6C', '#6E7005')
 
 ggplot(WSER_data) +
   ## Finish times
+  # Lines
+  geom_line(aes(x = Year, y = First_man_time),
+            linewidth = .7, alpha = .45, color = '#2B4561', linetype = 1) +
+  geom_line(aes(x = Year, y = First_woman_time),
+            linewidth = .7, alpha = .45, color = '#711412', linetype = 1) +
   # Points
   geom_point(aes(x = Year, y = First_man_time),
              size = 3.5, color = '#2B4561', fill = '#76A7E2',
              stroke = .15, shape = 21) +
   geom_point(aes(x = Year, y = First_woman_time),
-             size = 3.5, alpha = .8, color = '#711412', fill = '#FC4D6B',
+             size = 3.5, color = '#711412', fill = '#FC4D6B',
              stroke = .15, shape = 21) +
-  # Lines
-  geom_line(aes(x = Year, y = First_man_time),
-            linewidth = .7, alpha = .8, color = '#2B4561', linetype = 2) +
-  geom_line(aes(x = Year, y = First_woman_time),
-            linewidth = .7, alpha = .8, color = '#711412', linetype = 2) +
   
   ## Let's add the distance of the course
   geom_line(data = subset(WSER_data, Distance_miles %in% c('89','93.5','100.2')),
@@ -474,13 +573,19 @@ ggplot(WSER_data) +
      (miles): ') +
   theme_classic() +
   theme(legend.position = 'bottom',
-        legend.background = element_rect(fill = 'white', color = 'grey10',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
                                          linewidth = .25),
         legend.frame = element_rect(fill = 'transparent', color = 'grey10',
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
-                                    linewidth = .25))
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
 
 # Pretty good!
+
+# Save the plot
+# ggsave('Plots/Time_first_man_woman.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 ####----------------------------End of script-------------------------------####
