@@ -482,11 +482,11 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
              stroke = .05, shape = 21, size = 4) +
   
   # Point and error bars for 2026 prediction
-  geom_errorbar(data = subset(WSER_model, Year == 2026 & Temp_high_C == 23), 
+  geom_errorbar(data = subset(WSER_model, Year == 2026 & Temp_high_C == 22), 
                 aes(x = Year, ymin = Lwr*100, ymax = Upr*100),
                 color = 'grey10', linewidth = .8,
                 width = 1) +
-  geom_point(data = subset(WSER_model, Year == 2026 & Temp_high_C == 23), 
+  geom_point(data = subset(WSER_model, Year == 2026 & Temp_high_C == 22), 
              aes(x = Year, y = response*100, fill = Temp_high_C),
              color = 'grey10', shape = 21, size = 5.5, stroke = .8) +
   
@@ -495,7 +495,7 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
   
   # Labels
   labs(title = 'Percentage of finishers at WSER',
-       subtitle = 'GLM fit for 2026 based on weather forecast',
+       subtitle = 'Bigger point is GLM fit for 2026 based on weather forecast',
        fill = 'Temperature: ',
        x = 'Year', y = '% of finishers') +
   
