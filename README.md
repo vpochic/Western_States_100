@@ -9,4 +9,4 @@ https://www.wser.org/
 I analysed the data with a Generalised Linear Model (GLM), mainly following the great tutorials made by my friend Bede Davies:
 https://bedeffinianrowedavies.com/statisticstutorials/introductionglms
 
-I published the results in a blog post: (link)
+I published the results in an article on my blog Phycoplankton: https://phycoplankton.fr/2026/06/26/heat-and-run-temperature-at-the-western-states-100/
