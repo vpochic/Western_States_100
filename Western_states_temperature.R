@@ -115,7 +115,7 @@ ggplot(WSER_data_2) +
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
                                     linewidth = .25),
-        plot.background = element_rect(fill = '#F8F7F5'),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
         panel.background = element_rect(fill = '#F8F7F5'))
 
 # Save the plot
@@ -146,7 +146,7 @@ ggplot(WSER_data_2) +
                                     linewidth = .25),
         legend.ticks = element_line(color = 'grey10',
                                     linewidth = .25),
-        plot.background = element_rect(fill = '#F8F7F5'),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
         panel.background = element_rect(fill = '#F8F7F5'))
 
 # Save the plot
