@@ -1,6 +1,6 @@
 ### Western States Endurance Run: temperature and percent of finishers ###
 ## Author: V. POCHIC
-# Last modif: 2026/06/26
+# Last modif: 2026/06/30
 
 ## Description ####
 
@@ -27,7 +27,7 @@ library(ggnewscale)
 ####------------------------------------------------------------------------####
 ## Import and curate data ####
 
-WSER_data <- read.csv2('Data/WSER_temperature_finishers_data.csv',
+WSER_data <- read.csv2('Data/WSER_temperature_finishers_data_2025.csv',
                        header = TRUE, fileEncoding = 'ISO-8859-1')
 
 # First of all, we will compute the temperature in proper degrees celsius, 
@@ -520,6 +520,83 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
 # ggsave('Plots/Model_prediction_2026.png', height = 150, width = 160,
 #        units = 'mm', dpi = 500)
 
+### EDIT: Prediction results! ####
+
+# The results of the 2026 Western States are out on the official website!
+# How did our prediction go?
+
+WSER_data_2026 <- read.csv2('Data/WSER_temperature_finishers_data_2026.csv',
+                       header = TRUE, fileEncoding = 'ISO-8859-1')
+
+# Format the dataset with the 2026 data correctly
+WSER_data_2026 <- WSER_data_2026 %>%
+  # Convert temperature from F to C
+  mutate(Temp_high_C = (Temp_high_F-32)*(5/9)) %>%
+  mutate(Temp_low_C = (Temp_low_F-32)*(5/9)) %>%
+  # Compute the temperature range
+  mutate(Temp_range = Temp_high_C-Temp_low_C) %>%
+  # Get the date in Date format
+  mutate(Date = dmy(Date)) %>%
+  mutate(Year = year(Date)) %>%
+  mutate(First_man_time = hms(First_man_time)) %>%
+  mutate(First_woman_time = hms(First_woman_time))
+
+# The percentage of finishers was 87%... Well within our confidence interval!
+
+ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
+  
+  # Points for true data (1979-2025)
+  geom_point(data = WSER_data_2,
+             # We'll fill them by year to see if it fits the model
+             aes(x = Year, y = Finish_percent,
+                 fill = Temp_high_C),
+             stroke = .05, shape = 21, size = 4) +
+  
+  # Point and error bars for 2026 prediction
+  geom_errorbar(data = subset(WSER_model, Year == 2026 & Temp_high_C == 22), 
+                aes(x = Year, ymin = Lwr*100, ymax = Upr*100),
+                color = 'grey10', linewidth = .8,
+                width = 1) +
+  geom_point(data = subset(WSER_model, Year == 2026 & Temp_high_C == 22), 
+             aes(x = Year, y = response*100, fill = Temp_high_C),
+             color = 'grey10', shape = 21, size = 5.5, 
+             stroke = .8) +
+  
+  # Point for 2026 true percentage
+  geom_point(data = subset(WSER_data_2026, Year == 2026),
+             # We'll fill them by year to see if it fits the model
+             aes(x = Year, y = Finish_percent,
+                 fill = Temp_high_C), color = 'grey10',
+             stroke = .2, shape = 21, size = 5) +
+
+  # color scale
+  scale_fill_distiller(palette = 'RdYlBu', direction = -1) +
+  
+  # Labels
+  labs(title = 'Percentage of finishers at WSER - including 2026!',
+       subtitle = 'Bigger point is GLM fit for 2026 based on weather forecast',
+       fill = 'Temperature: ',
+       x = 'Year', y = '% of finishers') +
+  
+  # x- and y-axis limits
+  scale_y_continuous(limits = c(40,100)) +
+  scale_x_continuous(limits = c(1979, 2027)) +
+  
+  theme_classic() +
+  theme(legend.position = 'bottom',
+        legend.background = element_rect(fill = '#F8F7F5', color = 'grey10',
+                                         linewidth = .25),
+        legend.frame = element_rect(fill = 'transparent', color = 'grey10',
+                                    linewidth = .25),
+        legend.ticks = element_line(color = 'grey10',
+                                    linewidth = .25),
+        plot.background = element_rect(fill = '#F8F7F5', color = '#F8F7F5'),
+        panel.background = element_rect(fill = '#F8F7F5'))
+
+## Nice stuff!
+# Save the plot
+# ggsave('Plots/Model_prediction_2026_results.png', height = 150, width = 160,
+#        units = 'mm', dpi = 500)
 
 ####------------------------------------------------------------------------####
 ### Bonus plot ####
@@ -527,7 +604,7 @@ ggplot(subset(WSER_model, Temp_high_C %in% c(20, 25, 30, 35, 40))) +
 # How about a little bonus plot with the finish times of the 1st man and woman
 # for each edition?
 
-WSER_data <- WSER_data %>%
+WSER_data_2026 <- WSER_data_2026 %>%
   mutate(Distance_miles = as_factor(Distance_miles)) %>%
   mutate(Distance_miles = fct_relevel(Distance_miles,
                                       c('89', '93.5', '?', '100.2')))
@@ -535,7 +612,7 @@ WSER_data <- WSER_data %>%
 # A little color palette
 sierra_3 <- c('#759AD9', '#225E6C', '#6E7005')
 
-ggplot(WSER_data) +
+ggplot(WSER_data_2026) +
   ## Finish times
   # Lines
   geom_line(aes(x = Year, y = First_man_time),
@@ -551,7 +628,7 @@ ggplot(WSER_data) +
              stroke = .15, shape = 21) +
   
   ## Let's add the distance of the course
-  geom_line(data = subset(WSER_data, Distance_miles %in% c('89','93.5','100.2')),
+  geom_line(data = subset(WSER_data_2026, Distance_miles %in% c('89','93.5','100.2')),
             aes(x = Year, y = hms('13H 00M 00S'), 
                 color = as_factor(Distance_miles)), linewidth = 3) +
   
@@ -567,7 +644,7 @@ ggplot(WSER_data) +
   
   # Labels
   labs(title = 'Time of first man and woman at WSER',
-       subtitle = '(1974-2025)',
+       subtitle = '(1974-2026)',
        x = 'Year', y = 'Time in hours, minutes, seconds',
        color = 'Course distance
      (miles): ') +
